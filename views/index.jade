@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  ul
+    each person, i in userlist
+      li()= person.name
+
+  form#formAddPerson(name="addperson",method="post",action="/addperson")
+    input#inputUserName(type="text", placeholder="name", name="name")
+    input#inputUserEmail(type="text", placeholder="position", name="position")
+    button#btnSubmit(type="submit") submit
