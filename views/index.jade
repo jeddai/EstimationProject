@@ -1,14 +1,34 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div(ng-app='estimation', ng-controller='mainCtrl as ctrl')
+    h1= title
+    p Welcome to #{title}
 
-  ul
-    each person, i in userlist
-      li()= person.name
+    //ul
+    //  each person, i in userlist
+    //    li()= person.name
+    ul
+      li(ng-repeat="user in ctrl.users | orderBy:'name'")
+        p {{user.name}} is the {{user.position}}
 
-  form#formAddPerson(name="addperson",method="post",action="/addperson")
-    input#inputUserName(type="text", placeholder="name", name="name")
-    input#inputUserEmail(type="text", placeholder="position", name="position")
-    button#btnSubmit(type="submit") submit
+    //form#formAddPerson(name="addperson",method="post",action="/addperson")
+    //  input#inputName(type="text", placeholder="name", name="name")
+    //  input#inputPosition(type="text", placeholder="position", name="position")
+    //  //input#inputPublication(type="text", placeholder="Publications", name="publication")
+    //  button#btnSubmit(type="submit") submit
+
+    input(type="text", placeholder="Name", ng-model='ctrl.newPerson.name')
+    input(type="text", placeholder="Position", ng-model='ctrl.newPerson.position')
+    br
+    div(ng-repeat='pub in ctrl.newPerson.publications')
+      input(type="text", placeholder="Authors", ng-model='pub.authors')
+      input(type="text", placeholder="Title", ng-model='pub.title')
+      input(type="text", placeholder="Conference Name", ng-model='pub.conferenceName')
+      input(type="text", placeholder="Conference Location", ng-model='pub.conferenceLocation')
+      input(type="text", placeholder="Year", ng-model='pub.year')
+    button(ng-click="ctrl.addPub()") Add Another Publication
+    button(ng-click="ctrl.addUser()") Submit
+
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js')
+    script(src='/javascripts/module.js')
