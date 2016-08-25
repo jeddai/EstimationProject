@@ -3,11 +3,12 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
   res.render('index', {
-    title: 'Express'
+    title: 'Estimation Project'
   });
 });
 
-router.get('/getUsers', function(req, res) {
+/* People */
+router.get('/getPeople', function(req, res) {
   var db = req.db;
 
   var collection = db.get('people');
@@ -17,31 +18,76 @@ router.get('/getUsers', function(req, res) {
   });
 });
 
-router.post('/addperson', function(req, res) {
-
-  // Set our internal DB variable
+router.post('/deletePerson', function(req, res) {
   var db = req.db;
 
-  // Get our form values. These rely on the "name" attributes
-  var name = req.body.name;
-  var position = req.body.position;
-  var publications = req.body.publications;
-
-  // Set our collection
   var collection = db.get('people');
 
-  // Submit to the DB
-  collection.insert({
-    "name" : name,
-    "position" : position,
-    "publications" : publications
-  }, function (err, doc) {
+  collection.remove({ _id : req.body.id }, function(err, results) {
+    res.send(!!err ? 'There was an error, ' + err : [200, results]);
+  });
+});
+
+router.post('/addPerson', function(req, res) {
+
+  var db = req.db;
+
+  var person = req.body;
+
+  var collection = db.get('people');
+
+  collection.insert(req.body, function (err, doc) {
     if (err) {
       // If it failed, return error
       res.send("There was a problem adding the information to the database.");
     } else {
       res.send([200, "success"]);
     }
+  });
+});
+
+/* Publications */
+router.get('/getpublications', function(req, res) {
+  var db = req.db;
+
+  var collection = db.get('publications');
+
+  collection.find({},{},function(err,docs) {
+    res.send(docs);
+  });
+});
+
+router.post('/getPublicationsForProfessor', function(req, res) {
+  var db = req.db;
+
+  var collection = db.get('publications');
+
+  collection.find({
+    authors : new RegExp('.*' + req.body.name + '.*')
+  }, {
+
+  },function(err, docs) {
+    res.send(docs);
+  });
+});
+
+router.post('/deletePublication', function(req, res) {
+  var db = req.db;
+
+  var collection = db.get('publications');
+
+  collection.remove({ _id : req.body.id }, function(err, results) {
+    res.send(!!err ? 'There was an error, ' + err : [200, results]);
+  });
+});
+
+router.post('/addpublication', function(req, res) {
+  var db = req.db;
+
+  var collection = db.get('publications');
+
+  collection.insert(req.body, function(err, doc) {
+    res.send(!!err ? err : [200, "Success"]);
   });
 });
 
