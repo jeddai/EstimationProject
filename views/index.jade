@@ -3,7 +3,9 @@ extends layout
 block content
   div(class="container", ng-app='estimation', ng-controller='mainCtrl as ctrl')
     h1= title
-    p Here is our estimation project!
+    p Here is our estimation project! Add professors/publications below.
+    br
+    | The DB is MongoDB, so as long as the authors value contains the exact name of the professor in it, it will link the two.
 
     h3 Professors
     table(class="table table-striped table-bordered")
@@ -60,7 +62,7 @@ block content
             div(class="row form-group")
               input(class="form-control", type="text", placeholder="Name", ng-model='ctrl.newPerson.name')
               input(class="form-control", type="text", placeholder="Position", ng-model='ctrl.newPerson.position')
-              button(class="btn btn-primary", ng-click="ctrl.addPerson()") Submit
+              button(class="btn btn-primary", ng-click="ctrl.addPerson()") Add Professor
       div(class="panel panel-primary")
         div(class="panel-heading") Add Publication
         div(class="panel-body")

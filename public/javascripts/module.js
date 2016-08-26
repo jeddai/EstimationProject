@@ -24,11 +24,7 @@ function controller($http) {
         .success(function(data) {
             vm.allPublications = data;
         });
-        if(!!vm.selectedProfessor) {
-            getPublicationsForProfessor(vm.selectedProfessor);
-        } else {
-            clearPublications();
-        }
+        clearPublications();
     }
 
     reload();
